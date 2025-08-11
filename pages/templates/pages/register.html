@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if messages %}
+  <ul class="messages" style="list-style:none; padding:0; margin-bottom:1rem;">
+    {% for message in messages %}
+      <li style="padding:10px; border-radius:5px; margin-bottom:5px; 
+                 {% if message.tags == 'success' %} background-color: #d4edda; color: #155724; 
+                 {% elif message.tags == 'error' %} background-color: #f8d7da; color: #721c24; 
+                 {% else %} background-color: #cce5ff; color: #004085; {% endif %}">
+        {{ message }}
+      </li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
+
+<style>
+  /* استدعاء متغيرات الألوان */
+  .register-container {
+    max-width: 420px;
+    margin: 4rem auto 3rem auto;
+    background-color: var(--card-bg);
+    padding: 2.3rem 2rem 2.5rem 2rem;
+    border-radius: 10px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.12);
+    color: var(--text);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  .register-container h2 {
+    color: var(--btn-primary-bg);
+    text-align: center;
+    margin-bottom: 1.8rem;
+    font-weight: 700;
+    font-size: 1.8rem;
+    user-select: none;
+  }
+  form label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    font-size: 0.95rem;
+    color: var(--text);
+  }
+  form input, form select, form textarea {
+    width: 100%;
+    padding: 9px 12px;
+    font-size: 1rem;
+    border-radius: 6px;
+    border: 1.5px solid var(--border);
+    background-color: #fff;
+    color: var(--text);
+    transition: border-color 0.3s ease;
+  }
+  form input:focus, form select:focus, form textarea:focus {
+    outline: none;
+    border-color: var(--btn-primary-bg);
+    box-shadow: 0 0 8px var(--btn-primary-bg);
+  }
+  .text-danger {
+    font-size: 0.85rem;
+    margin-top: 4px;
+    color: #dc3545; /* Bootstrap's danger red */
+  }
+  button[type="submit"] {
+    margin-top: 1.4rem;
+    width: 100%;
+    background-color: var(--btn-primary-bg);
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 10px 0;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  button[type="submit"]:hover {
+    background-color: var(--btn-primary-hover);
+  }
+  p.mt-3 {
+    text-align: center;
+    color: var(--text);
+    font-weight: 500;
+  }
+  p.mt-3 a {
+    color: var(--btn-primary-bg);
+    font-weight: 700;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  p.mt-3 a:hover {
+    color: var(--btn-primary-hover);
+    text-decoration: underline;
+  }
+</style>
+
+<div class="register-container" role="main" aria-label="Create account form">
+  <h2>📝 Create Account</h2>
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    {% for field in form %}
+      <div class="mb-3">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% if field.errors %}
+          <div class="text-danger">{{ field.errors|striptags }}</div>
+        {% endif %}
+      </div>
+    {% endfor %}
+    <button type="submit">Register</button>
+  </form>
+  <p class="mt-3">
+    Already have an account? <a href="{% url 'login' %}">Login here</a>
+  </p>
+</div>
+{% endblock %}

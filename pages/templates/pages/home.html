@@ -1,0 +1,241 @@
+{% extends 'base.html' %}
+{% block title %}Welcome to AtlasMart{% endblock %}
+
+{% block content %}
+<style>
+/* ==================== HOME PAGE STYLES ==================== */
+
+/* الخلفية ولون النص */
+body.home-page {
+  background-color: var(--bg);
+  color: var(--text);
+  padding-top: 70px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* عنوان ترحيبي */
+.home-container h2.text-center {
+  font-size: 2.8rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.home-container p.text-center {
+  font-size: 1.2rem;
+  color: var(--text);
+  opacity: 0.8;
+  margin-bottom: 2rem;
+}
+
+/* حاوية السلايدر */
+.carousel-container {
+  max-width: 1400px;
+  margin: auto;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  background-color: var(--card-bg);
+  border: 2px solid var(--border);
+  transition: box-shadow 0.3s ease;
+}
+.carousel-container:hover {
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* صور السلايدر */
+.carousel-item img {
+  height: 520px;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 12px;
+  border: 2px solid var(--border);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 8px rgba(0,0,0,0.05);
+}
+
+.carousel-item img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+/* تسميات السلايدر */
+.carousel-caption {
+  position: absolute;
+  bottom: 30px;
+  left: 40px;
+  text-align: left;
+  background-color: rgba(0, 0, 0, 0.4);
+  padding: 15px 25px;
+  border-radius: 10px;
+  max-width: 320px;
+  transition: background-color 0.3s ease;
+}
+
+.carousel-caption a.btn {
+  background-color: var(--btn-primary-bg);
+  color: white;
+  border-radius: 30px;
+  padding: 12px 24px;
+  font-size: 18px;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 6px 14px rgba(255,111,77,0.25);
+  transition: all 0.3s ease-in-out;
+  display: inline-block;
+}
+
+.carousel-caption a.btn:hover {
+  background-color: var(--btn-primary-hover);
+  transform: scale(1.07);
+  box-shadow: 0 8px 18px rgba(43,54,67,0.4);
+  color: #fff;
+}
+
+/* تحجيم responsive */
+@media (max-width: 768px) {
+  .carousel-caption {
+    left: 20px;
+    bottom: 20px;
+    padding: 10px 15px;
+    max-width: 90%;
+  }
+  .carousel-caption a.btn {
+    font-size: 16px;
+    padding: 10px 20px;
+  }
+  .carousel-item img {
+    height: 300px;
+  }
+}
+
+/* ازرار التحكم بالسلايدر */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-size: 100% 100%;
+  filter: invert(1);
+  width: 36px;
+  height: 36px;
+}
+
+/* أضافة تأثير hover على ازرار التحكم */
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+  filter: invert(0.7);
+  cursor: pointer;
+}
+
+/* إضافة تأثير بسيط عند مرور الماوس على السلايدر */
+.carousel:hover {
+  cursor: pointer;
+}
+
+/* إضافة تباعد من الأعلى أسفل navbar */
+.home-container {
+  padding-top: 60px;
+  margin-bottom: 40px;
+}
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</style>
+
+<div class="container mt-5">
+  <h2 class="text-center">Welcome to AtlasMart 🛒</h1>
+  <p class="text-center">Find everything you need in one place.</p>
+
+  <div class="carousel-container mt-4">
+    <div id="shoppingCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+
+        <div class="carousel-item active">
+          <img src="https://i.pinimg.com/1200x/4f/b9/49/4fb949c8a88cbef6991196e6b9d14ed1.jpg" class="d-block" alt="Shopping 1">
+          <div class="carousel-caption">
+            <a href="{% url 'products' %}" class="btn">Start Shopping</a>
+
+          </div>
+        </div>
+
+        <div class="carousel-item">
+          <img src="https://i.pinimg.com/1200x/93/65/4b/93654bf4f5fb881bab92b23e2f2e3ad5.jpg" class="d-block" alt="Shopping 2">
+          <div class="carousel-caption">
+            <a href= "{% url 'products' %}" class="btn">Explore Products</a>
+          </div>
+        </div>
+
+        <div class="carousel-item">
+          <img src="https://media.istockphoto.com/id/1496047821/photo/shopping-portrait-and-black-woman-with-bags-at-a-mall-happy-and-excited-for-sale-face-fashion.jpg?s=612x612&w=0&k=20&c=y5rZRXH8HTmlEBx8-34LPtr7Fqmc2dn99XYIC8_jHYM=" class="d-block" alt="Shopping 3">
+          <div class="{% url 'products' %}" class="btn">Discover More</a>
+          </div>
+        </div>
+
+        <div class="carousel-item">
+          <img src="https://plus.unsplash.com/premium_photo-1673502752899-04caa9541a5c?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="d-block" alt="Shopping 3">
+          <div class="carousel-caption">
+            <a href="{% url 'products' %}" class="btn">Discover More</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <button class="carousel-control-prev" type="button" data-bs-target="#shoppingCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#shoppingCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </button>
+    </div>
+  </div>
+</div>
+{% endblock %}

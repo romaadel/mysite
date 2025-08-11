@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Products{% endblock %}
+<input type="text" class="form-control search-bar" placeholder="Search products...">
+
+
+{% block content %}
+<!-- السلايدر -->
+
+<div id="mainSlider" class="carousel slide carousel-fade mb-4" data-bs-ride="carousel">
+  <div class="carousel-inner rounded shadow-lg">
+
+    <!-- السلايد 1 -->
+    <div class="carousel-item active">
+      <img src="https://i.pinimg.com/1200x/00/15/7f/00157fac4000c38abcca5244ff4f8bb7.jpg" 
+           class="d-block w-100 slider-img" alt="Fashion Sale">
+      <div class="carousel-caption d-none d-md-block">
+        <h3 class="fw-bold">خصومات تصل إلى 50%</h3>
+        <p>أفضل العروض على الملابس والأزياء</p>
+        <a href="#" class="btn btn-warning btn-sm">تسوق الآن</a>
+      </div>
+    </div>
+
+    <!-- السلايد 2 -->
+    <div class="carousel-item">
+      <img src="https://www.canva.com/design/DAGvj405BZo/1Rs68-VRil3RmcFvmZX18Q/view" 
+           class="d-block w-100 slider-img" alt="Electronics">
+      <div class="carousel-caption d-none d-md-block">
+        <h3 class="fw-bold">أحدث الإلكترونيات</h3>
+        <p>اشترِ أحدث الأجهزة بأسعار مذهلة</p>
+        <a href="#" class="btn btn-primary btn-sm">اكتشف الآن</a>
+      </div>
+    </div>
+
+    <!-- السلايد 3 -->
+    <div class="carousel-item">
+      <img src="https://images.unsplash.com/photo-1512295767273-ac109ac3acfa?w=1200" 
+           class="d-block w-100 slider-img" alt="Home Decor">
+      <div class="carousel-caption d-none d-md-block">
+        <h3 class="fw-bold">ديكور المنزل العصري</h3>
+        <p>أضف لمسة فنية لمنزلك</p>
+        <a href="#" class="btn btn-success btn-sm">تسوق الديكور</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- أزرار التحكم -->
+  <button class="carousel-control-prev" type="button" data-bs-target="#mainSlider" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon"></span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#mainSlider" data-bs-slide="next">
+    <span class="carousel-control-next-icon"></span>
+  </button>
+</div>
+
+<!-- شبكة المنتجات -->
+<div class="row g-3">
+  {% for product in products %}
+    <div class="col-md-4 d-flex">
+      <div class="card product-card w-100 p-3">
+        {% if product.image %}
+          <img src="{{ product.image.url }}" class="card-img-top mb-3 product-image" alt="{{ product.name }}">
+        {% else %}
+          <div class="bg-secondary text-center py-5 rounded mb-3 text-white">No Image</div>
+        {% endif %}
+        <div class="card-body d-flex flex-column">
+          <h5>{{ product.name }}</h5>
+          <p class="text-muted">{{ product.description|truncatewords:15 }}</p>
+          <div class="mb-2">
+            <span class="price-new">${{ product.price }}</span>
+          </div>
+          <a href="{% url 'product_detail' product.id %}" class="btn btn-info mt-auto">View</a>
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <p class="text-center text-light">No products found.</p>
+  {% endfor %}
+</div>
+
+{% endblock %}

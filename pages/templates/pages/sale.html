@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Sale - AtlasMart{% endblock %}
+
+{% block content %}
+<!-- Hero Banner -->
+<div class="text-center bg-dark text-white py-5">
+  <p class="mb-1 text-uppercase">End of Summer Sale</p>
+  <h1 class="display-4 fw-bold">Up to 60% off</h1>
+  <p class="small">Valid on selected Sale items only. While stocks last.</p>
+
+  <div class="d-flex flex-wrap justify-content-center gap-2 mt-4">
+    <a href="#" class="btn btn-light btn-sm">View all Sale</a>
+    <a href="#" class="btn btn-outline-light btn-sm">Shoes + sneakers</a>
+    <a href="#" class="btn btn-outline-light btn-sm">Tees</a>
+    <a href="#" class="btn btn-outline-light btn-sm">Shorts</a>
+    <a href="#" class="btn btn-outline-light btn-sm">Swim</a>
+    <a href="#" class="btn btn-outline-light btn-sm">Selling fast</a>
+  </div>
+</div>
+
+<!-- Placeholder for product section -->
+<div class="row mt-5">
+  {% for product in products %}
+  <div class="col-md-3 mb-4">
+    <div class="product-card text-center">
+      <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid mb-2" style="max-height: 200px;">
+      <h5 class="fw-bold">{{ product.name }}</h5>
+      <p class="text-muted">${{ product.price }}</p>
+      <a href="{% url 'product_detail' product.id %}" class="btn btn-primary btn-sm">View</a>
+    </div>
+  </div>
+  {% empty %}
+  <p class="text-center">No products found in this sale.</p>
+  {% endfor %}
+</div>
+{% endblock %}
