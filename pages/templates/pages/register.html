@@ -2,20 +2,6 @@
 
 {% block content %}
 
-{% if messages %}
-  <ul class="messages" style="list-style:none; padding:0; margin-bottom:1rem;">
-    {% for message in messages %}
-      <li style="padding:10px; border-radius:5px; margin-bottom:5px; 
-                 {% if message.tags == 'success' %} background-color: #d4edda; color: #155724; 
-                 {% elif message.tags == 'error' %} background-color: #f8d7da; color: #721c24; 
-                 {% else %} background-color: #cce5ff; color: #004085; {% endif %}">
-        {{ message }}
-      </li>
-    {% endfor %}
-  </ul>
-{% endif %}
-
-
 <style>
   /* استدعاء متغيرات الألوان */
   .register-container {

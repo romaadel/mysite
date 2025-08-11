@@ -5,7 +5,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-i0+h9*+-a$08c8fbcxc=5plvy_5ffc##&^6&r=e2klo(bsbg#'
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [ 'romaa123.pythonanywhere.com','localhost', '127.0.0.1']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -15,13 +15,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'pages.apps.PagesConfig',  
+    'pages.apps.PagesConfig',
 
     # django-allauth apps
     'django.contrib.sites',
     'allauth',
     'allauth.account',
-    'allauth.socialaccount',  # اختياري لو هتسجل بسوشيال ميديا
+    'allauth.socialaccount',
 ]
 
 SITE_ID = 1
@@ -32,7 +32,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'allauth.account.middleware.AccountMiddleware', 
+    'allauth.account.middleware.AccountMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
@@ -86,37 +86,58 @@ LANGUAGES = [
     ('ar', 'Arabic'),
 ]
 
-LOCALE_PATHS = [ BASE_DIR / 'locale' ]
+LOCALE_PATHS = [BASE_DIR / 'locale']
 
+# ======== Static & Media ========
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATICFILES_DIRS = [BASE_DIR / "static"]  # مجلد static الخاص بالمشروع
+STATIC_ROOT = BASE_DIR / "staticfiles"    # مجلد لتجميع كل static عند النشر
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = BASE_DIR / "media"
 
+# ======== Auth Settings ========
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'products'
 LOGOUT_REDIRECT_URL = '/'
 
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',  # أولاً للمستخدمين العاديين
-    'allauth.account.auth_backends.AuthenticationBackend',  # ثم allauth
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-# django-allauth settings
-ACCOUNT_AUTHENTICATION_METHOD = 'username_email'  # تسجيل دخول باليوزرنيم أو الإيميل
+# ======== django-allauth ========
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'  # لازم التحقق من الإيميل لتفعيل الحساب
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
-# إعدادات إرسال الإيميل (SMTP)
+# ======== Email (SMTP) ========
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'romaadel5566@gmail.com'  # حساب Gmail مع App Password
-EMAIL_HOST_PASSWORD = 'enatefcifbxpoerr'  # كلمة مرور التطبيق بدون فراغات
+EMAIL_HOST_USER = 'romaadel5566@gmail.com'
+EMAIL_HOST_PASSWORD = 'enatefcifbxpoerr'  # App Password
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_SUBJECT_PREFIX = '[MySite] '
+
+
+
+
+
+# Static files (CSS, JavaScript, Images)
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# لو عندك مجلد static داخل المشروع
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+# المكان اللي Django بيجمع فيه كل الـ static files لما تشغل collectstatic
+
+
+# Media files (ملفات المستخدمين المرفوعة)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

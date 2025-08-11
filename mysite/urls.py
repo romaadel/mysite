@@ -5,8 +5,9 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('pages.urls')),  
-     path('accounts/', include('allauth.urls')),  # تسجيل/تفعيل/تسجيل دخول   
+     path('accounts/', include('allauth.urls')),  # تسجيل/تفعيل/تسجيل دخول  
+      
+      path('', include('pages.urls')), 
    
 
 ]
