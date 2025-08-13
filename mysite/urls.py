@@ -5,7 +5,7 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('allauth.urls')),  # تسجيل/تفعيل/تسجيل دخول
+    path('accounts/', include('allauth.urls')),  
 
     path('', include('pages.urls')),
     path('i18n/', include('django.conf.urls.i18n')),
