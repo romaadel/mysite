@@ -28,7 +28,7 @@ from .models import Product, Review, Order, OrderItem
 from django.shortcuts import redirect
 
 
-# -------------------- تغيير اللغة --------------------
+# -------------------- change lang --------------------
 def set_language(request):
     lang_code = request.GET.get('lang', 'en')
     if lang_code in ['en', 'ar']:
@@ -37,14 +37,14 @@ def set_language(request):
     return redirect(request.META.get('HTTP_REFERER', '/'))
 
 
-# -------------------- النماذج --------------------
+# -------------------- forms--------------------
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ['name', 'description', 'category', 'price', 'rating', 'image']
 
 
-# -------------------- عرض المنتجات --------------------
+# -------------------- [view product --------------------
 def products(request):
     query = request.GET.get("q", "").strip()
     category = request.GET.get("category", "").strip()
@@ -72,7 +72,7 @@ def products(request):
     })
 
 
-# -------------------- تفاصيل المنتج والتقييم --------------------
+# --------------------productand detail --------------------
 def product_detail(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     reviews = product.reviews.select_related('user').all()
@@ -137,7 +137,7 @@ def profile_view(request):
     })
 
 
-# -------------------- CRUD المنتجات --------------------
+# -------------------- products--------------------
 @login_required
 def add_product(request):
     if request.method == 'POST':
@@ -256,7 +256,7 @@ def logout_view(request):
     return redirect('login')
 
 
-# -------------------- السلة --------------------
+# --------------------card--------------------
 def get_cart_items(request):
     cart = request.session.get('cart', {})
     items = []
@@ -326,7 +326,7 @@ def update_cart(request, product_id):
     return redirect('cart')
 
 
-# -------------------- الدفع والطلبات --------------------
+# --------------------order --------------------
 @login_required
 def checkout(request):
     items, total = get_cart_items(request)
@@ -374,7 +374,7 @@ def order_detail(request, order_id):
     return render(request, 'pages/order_detail.html', {'order': order})
 
 
-# -------------------- تواصل وصفحة رئيسية --------------------
+# -------------------- contact page--------------------
 def contact(request):
     if request.method == "POST":
         name = request.POST.get("name")
