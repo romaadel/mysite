@@ -91,15 +91,13 @@ LANGUAGES = [
 
 LOCALE_PATHS = [BASE_DIR / 'locale']
 
-# ======== Static & Media ========
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / "static"]  # مجلد static الخاص بالمشروع
-STATIC_ROOT = BASE_DIR / "staticfiles"    # مجلد لتجميع كل static عند النشر
+STATICFILES_DIRS = [BASE_DIR / "static"]  
+STATIC_ROOT = BASE_DIR / "staticfiles"    
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / "media"
 
-# ======== Auth Settings ========
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'products'
@@ -110,13 +108,13 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-# ======== django-allauth ========
+
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
-# ======== Email (SMTP) ========
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
@@ -130,7 +128,7 @@ EMAIL_SUBJECT_PREFIX = '[MySite] '
 
 
 
-# Static files (CSS, JavaScript, Images)
+
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # لو عندك مجلد static داخل المشروع
@@ -138,9 +136,9 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
-# المكان اللي Django بيجمع فيه كل الـ static files لما تشغل collectstatic
 
 
-# Media files (ملفات المستخدمين المرفوعة)
+
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
