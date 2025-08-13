@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-# جدول المنتجات
 class Product(models.Model):
     name = models.CharField(max_length=100)
     image = models.ImageField(upload_to='product_images/slider/', null=True, blank=True)
@@ -11,8 +10,6 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     rating = models.IntegerField(default=0)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='products')
-
-    # ✅ الحقل الجديد
     is_worthy_pick = models.BooleanField(default=False)
     on_sale = models.BooleanField(default=False)
 
@@ -20,7 +17,7 @@ class Product(models.Model):
         return self.name
 
 
-# جدول صور متعددة للمنتج (سلايدر صور)
+
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(upload_to='product_images/slider/', null=True, blank=True)
@@ -29,22 +26,22 @@ class ProductImage(models.Model):
         return f"Image for {self.product.name}"
 
 
-# جدول التقييمات والمراجعات
+
 class Review(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    rating = models.IntegerField(choices=[(i, i) for i in range(1, 6)])  # 1 إلى 5 نجوم
+    rating = models.IntegerField(choices=[(i, i) for i in range(1, 6)])  
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ('product', 'user')  # كل مستخدم يقدر يقيّم المنتج مرة واحدة فقط
+        unique_together = ('product', 'user') 
 
     def __str__(self):
         return f"{self.user.username} - {self.product.name} - {self.rating}⭐"
 
 
-# جدول الطلبات
+
 class Order(models.Model):
     STATUS_CHOICES = (
         ('pending', 'Pending'),
@@ -66,7 +63,7 @@ class Order(models.Model):
         return f"Order #{self.id} by {self.user.username}"
 
 
-# جدول تفاصيل المنتجات داخل الطلب
+
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
