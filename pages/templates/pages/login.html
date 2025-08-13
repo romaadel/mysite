@@ -4,19 +4,26 @@
 <div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
   <div class="card shadow-lg p-4" style="width: 100%; max-width: 400px; border-radius: 15px;">
     <h2 class="text-center mb-4 text-primary">Login</h2>
-    <form method="post" novalidate>
+    <form method="post" novalidate autocomplete="off">
       {% csrf_token %}
-      {% for field in form %}
-        <div class="mb-3">
-          <label class="form-label">{{ field.label }}</label>
-          {{ field }}
-          {% if field.errors %}
-            <div class="text-danger small">{{ field.errors }}</div>
-          {% endif %}
-        </div>
-      {% endfor %}
+
+      <!-- حقول وهمية لإرباك المتصفح -->
+      <input type="text" name="fakeusernameremembered" style="display:none;">
+      <input type="password" name="fakepasswordremembered" style="display:none;">
+
+      <div class="mb-3">
+        <label for="id_username" class="form-label">Username</label>
+        <input type="text" name="username" id="id_username" class="form-control" autocomplete="off" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="id_password" class="form-label">Password</label>
+        <input type="password" name="password" id="id_password" class="form-control" autocomplete="new-password" required>
+      </div>
+
       <button type="submit" class="btn btn-primary w-100">Login</button>
     </form>
+
     <div class="text-center mt-3">
       <small>Don't have an account? <a href="{% url 'register' %}">Register here</a></small>
     </div>

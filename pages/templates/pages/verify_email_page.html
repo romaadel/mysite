@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Verify Your Email</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f6f8;
+      margin: 0; padding: 0;
+      color: #333;
+      text-align: center;
+      padding: 50px;
+    }
+    a.button {
+      background-color: #5A2D82;
+      color: white;
+      padding: 15px 30px;
+      text-decoration: none;
+      font-weight: 600;
+      border-radius: 6px;
+      font-size: 18px;
+    }
+    a.button:hover {
+      background-color: #7a4fbf;
+    }
+  </style>
+</head>
+<body>
+  <h1>Almost done!</h1>
+  <p>Please verify your email address to activate your account.</p>
+  <a href="{{ activation_link }}" class="button" target="_blank">Verify Email</a>
+  <p>Check your email inbox (or spam folder) for the activation link.</p>
+</body>
+</html>

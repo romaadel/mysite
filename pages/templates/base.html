@@ -1,13 +1,14 @@
 
 {% load static %}
 
-<!DOCTYPE html> 
-<html lang="en">
+<!DOCTYPE html>
+<html lang="{{ request.LANGUAGE_CODE }}" dir="{% if request.LANGUAGE_CODE == 'ar' %}rtl{% else %}ltr{% endif %}">
+
 <head>
   <meta charset="UTF-8">
   <title>{% block title %}AtlasMart{% endblock %}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
- 
+
    <!-- Bootstrap JS + Popper -->
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -24,35 +25,33 @@
 
 <body id="main-body" class="{% block body_class %}{% endblock %}">
 
-  
+
 
   <!-- Navbar -->
-   <nav class="navbar navbar-expand-lg fixed-top" style="background-color: var(--navbar-bg);">
+   <nav id="mainNavbar" class="navbar navbar-expand-lg fixed-top" style="background-color: var(--navbar-bg);">
+
   <div class="container">
     <!-- Logo -->
 <div class="d-flex flex-column align-items-start ms-3">
-  <a class="navbar-brand fw-bold text-uppercase px-2 py-1 rounded" 
-     href="{% url 'products' %}" 
+  <a class="navbar-brand fw-bold text-uppercase px-2 py-1 rounded"
+     href="{% url 'products' %}"
      style="letter-spacing: 4px; font-size: 1.5rem; color: #D4A5A5;">
      ✦ 𝚆 𝙾 𝙽 𝙴 𝚃 𝙷 𝙰 ✦
   </a>
-  <small style="font-size: 0.75rem; color: #8A4F7D; margin-top: -5px;">
+  <small class="mt-1" style="font-size: 0.75rem; color: #8A4F7D;">
     "Be Bold. Be Soft. Be You."
-    
   </small>
 </div>
 
-   
 
 
 
 
 
     <!-- Toggler for mobile -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
+    <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+  <span class="navbar-toggler-icon"></span>
+</button>
     <div class="collapse navbar-collapse" id="navbarContent">
 
       <!-- Search Bar (products & profile pages only) -->
@@ -79,15 +78,56 @@
         </li>
 
         <!-- Language -->
-        <li class="nav-item dropdown me-3">
-          <a class="nav-link dropdown-toggle" href="#" id="langDropdown" role="button" data-bs-toggle="dropdown">
-            🌐 {{ request.LANGUAGE_CODE|upper }}
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="/set_language/?lang=en">English</a></li>
-            <li><a class="dropdown-item" href="/set_language/?lang=ar">العربية</a></li>
-          </ul>
-        </li>
+
+
+
+<li class="nav-item dropdown me-3">
+  <a class="nav-link dropdown-toggle" href="#" id="langDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    🌐 {{ request.LANGUAGE_CODE|upper }}
+  </a>
+  <ul class="dropdown-menu" aria-labelledby="langDropdown">
+    <li>
+      <form action="{% url 'set_language' %}" method="post" class="m-0 p-0">
+        {% csrf_token %}
+        <input type="hidden" name="language" value="en" />
+        <button type="submit" class="dropdown-item">English</button>
+      </form>
+    </li>
+    <li>
+      <form action="{% url 'set_language' %}" method="post" class="m-0 p-0">
+        {% csrf_token %}
+        <input type="hidden" name="language" value="ar" />
+        <button type="submit" class="dropdown-item">العربية</button>
+      </form>
+    </li>
+  </ul>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         <!-- User Menu -->
         {% if user.is_authenticated %}
@@ -115,8 +155,10 @@
 
         <!-- Cart -->
         <li class="nav-item">
-          <a class="nav-link" href="#">🛒 Cart</a>
-        </li>
+  <a class="nav-link" href="{% url 'cart' %}">🛒 Cart</a>
+  </li>
+
+
       </ul>
     </div>
   </div>
@@ -126,7 +168,7 @@
   <div class="category-bar w-100 border-top">
     <div class="container-fluid">
       <div class="category-scroll d-flex align-items-center">
-        
+
         <!-- أيقونة Home -->
         <a href="{% url 'home' %}" class="me-3 d-flex align-items-center home-link">
           <i class="bi bi-house-door-fill me-1"></i> Home
@@ -253,5 +295,40 @@
       applyTheme(next);
     });
   </script>
+
+<script>
+    function adjustCategoryBar() {
+      const navbar = document.getElementById('mainNavbar');
+      const categoryBar = document.querySelector('.category-bar');
+      if (navbar && categoryBar) {
+        const navHeight = navbar.offsetHeight;
+        categoryBar.style.top = navHeight + 'px';
+      }
+    }
+
+    window.addEventListener('load', adjustCategoryBar);
+    window.addEventListener('resize', adjustCategoryBar);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </body>
-</html> 
+</html>

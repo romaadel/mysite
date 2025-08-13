@@ -14,6 +14,7 @@ class Product(models.Model):
 
     # ✅ الحقل الجديد
     is_worthy_pick = models.BooleanField(default=False)
+    on_sale = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name

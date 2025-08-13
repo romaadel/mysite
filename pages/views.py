@@ -1,7 +1,7 @@
 from collections import defaultdict
 from decimal import Decimal
 from django.contrib.auth import get_user_model
-
+from django.core.mail import EmailMessage
 
 from django import forms
 from django.contrib import messages
@@ -32,7 +32,8 @@ from django.shortcuts import redirect
 def set_language(request):
     lang_code = request.GET.get('lang', 'en')
     if lang_code in ['en', 'ar']:
-        request.session[translation.LANGUAGE_SESSION_KEY] = lang_code
+        request.session['django_language'] = lang_code
+
     return redirect(request.META.get('HTTP_REFERER', '/'))
 
 
@@ -72,12 +73,16 @@ def products(request):
 
 
 # -------------------- تفاصيل المنتج والتقييم --------------------
-@login_required
 def product_detail(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     reviews = product.reviews.select_related('user').all()
 
+    # If the user is logged in and submitting a review form
     if request.method == "POST":
+        if not request.user.is_authenticated:
+            messages.error(request, "You must be logged in to add a review.")
+            return redirect('login')
+
         rating = request.POST.get("rating")
         comment = request.POST.get("comment", "").strip()
 
@@ -86,15 +91,15 @@ def product_detail(request, product_id):
             if not (1 <= rating_int <= 5):
                 raise ValueError
         except (TypeError, ValueError):
-            messages.error(request, "التقييم غير صالح.")
+            messages.error(request, "Invalid rating.")
             return redirect('product_detail', product_id=product_id)
 
         if not comment:
-            messages.error(request, "الرجاء كتابة تعليق.")
+            messages.error(request, "Please write a comment.")
             return redirect('product_detail', product_id=product_id)
 
         if Review.objects.filter(product=product, user=request.user).exists():
-            messages.error(request, "لقد قمت بتقييم هذا المنتج من قبل.")
+            messages.error(request, "You have already reviewed this product.")
         else:
             Review.objects.create(
                 product=product,
@@ -102,7 +107,7 @@ def product_detail(request, product_id):
                 rating=rating_int,
                 comment=comment
             )
-            messages.success(request, "تمت إضافة تقييمك بنجاح.")
+            messages.success(request, "Your review has been added successfully.")
             return redirect('product_detail', product_id=product_id)
 
     return render(request, 'pages/product_detail.html', {
@@ -111,16 +116,16 @@ def product_detail(request, product_id):
     })
 
 
-# -------------------- صفحات إضافية --------------------
+
 def sale_page(request):
     products = Product.objects.filter(on_sale=True)
-    return render(request, 'sale.html', {'products': products})
+    return render(request, 'pages/sale.html', {'products': products})
 
 
 @login_required
 def manage_products(request):
     products_qs = Product.objects.filter(owner=request.user)
-    return render(request, 'pages/manage.html', {'products': products_qs})
+    return render(request, 'pages/manage_products.html', {'products': products_qs})
 
 
 @login_required
@@ -185,46 +190,34 @@ def register(request):
             user.is_active = False
             user.save()
 
+
             current_site = get_current_site(request)
-            subject = 'Activate Your Account'
-            activate_url = reverse('activate', kwargs={
-                'uidb64': urlsafe_base64_encode(force_bytes(user.pk)),
-                'token': default_token_generator.make_token(user),
-            })
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            token = default_token_generator.make_token(user)
+            activate_url = reverse('activate', kwargs={'uidb64': uid, 'token': token})
             activate_url = f"http://{current_site.domain}{activate_url}"
+
 
             message = render_to_string('pages/activation_email.html', {
                 'user': user,
-                'activate_url': activate_url,
+                'activation_link': activate_url,
             })
 
-            user.email_user(subject, message)
+            email = EmailMessage(
+                'Activate Your Account',
+                message,
+                to=[user.email]
+            )
+            email.content_subtype = "html"
+            email.send()
 
-            messages.success(request, 'تم إرسال رسالة تأكيد على بريدك الإلكتروني، يرجى التحقق منها.')
-            return redirect('login')
 
-        else:
-            return render(request, 'pages/register.html', {'form': form})
+            return render(request, 'pages/verify_email_page.html', {'activation_link': activate_url})
+
     else:
         form = RegisterForm()
-        return render(request, 'pages/register.html', {'form': form})
+    return render(request, 'pages/register.html', {'form': form})
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
 
 
 def activate(request, uidb64, token):
@@ -234,7 +227,7 @@ def activate(request, uidb64, token):
         user = User.objects.get(pk=uid)
     except (TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
-    
+
     if user is not None and default_token_generator.check_token(user, token):
         user.is_active = True
         user.save()
@@ -246,14 +239,8 @@ def activate(request, uidb64, token):
 
 
 
-
-
-
-
-
-   
 def login_view(request):
-    if request.method == 'POST': 
+    if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             user = form.get_user()
@@ -298,7 +285,7 @@ def get_cart_items(request):
 @login_required
 def cart_view(request):
     items, total = get_cart_items(request)
-    return render(request, 'cart/cart.html', {'items': items, 'total': total})
+    return render(request, 'pages/cart.html', {'items': items, 'total': total})
 
 
 @login_required
@@ -372,19 +359,19 @@ def checkout(request):
     else:
         form = CheckoutForm(initial={'full_name': request.user.get_full_name() or request.user.username})
 
-    return render(request, 'cart/checkout.html', {'form': form, 'items': items, 'total': total})
+    return render(request, 'pages/checkout.html', {'form': form, 'items': items, 'total': total})
 
 
 @login_required
 def my_orders(request):
     orders = Order.objects.filter(user=request.user).order_by('-created_at')
-    return render(request, 'orders/my_orders.html', {'orders': orders})
+    return render(request, 'pages/my_orders.html', {'orders': orders})
 
 
 @login_required
 def order_detail(request, order_id):
     order = get_object_or_404(Order, id=order_id, user=request.user)
-    return render(request, 'orders/order_detail.html', {'order': order})
+    return render(request, 'pages/order_detail.html', {'order': order})
 
 
 # -------------------- تواصل وصفحة رئيسية --------------------

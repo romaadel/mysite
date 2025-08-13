@@ -59,10 +59,24 @@ class RegisterForm(UserCreationForm):
 
 
 
-
 class CheckoutForm(forms.Form):
-    full_name = forms.CharField(max_length=200)
-    address = forms.CharField(widget=forms.Textarea(attrs={'rows':3}))
-    phone = forms.CharField(max_length=50, required=False)
-    note = forms.CharField(widget=forms.Textarea(attrs={'rows':2}), required=False)
-
+    full_name = forms.CharField(
+        max_length=200,
+        label='Full Name',
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    address = forms.CharField(
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        label='Address'
+    )
+    phone = forms.CharField(
+        max_length=50,
+        required=False,
+        label='Phone Number',
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    note = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
+        label='Additional Notes'
+    )

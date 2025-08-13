@@ -2,60 +2,66 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Activate Your Account</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f4f6f8;
+      background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
       margin: 0;
       padding: 0;
       color: #333;
     }
     .container {
       max-width: 600px;
-      margin: 40px auto;
-      background: #fff;
-      border-radius: 8px;
-      padding: 30px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      margin: 60px auto;
+      background: white;
+      border-radius: 12px;
+      padding: 40px 30px;
+      box-shadow: 0 10px 30px rgba(37, 117, 252, 0.3);
       text-align: center;
     }
     h1 {
-      color: #5A2D82;
+      color: #2575fc;
       margin-bottom: 20px;
+      font-weight: 700;
     }
     p {
-      font-size: 16px;
-      line-height: 1.5;
-      margin-bottom: 30px;
+      font-size: 17px;
+      line-height: 1.6;
+      margin-bottom: 25px;
+      color: #444;
     }
     a.button {
-      background-color: #5A2D82;
+      background-color: #2575fc;
       color: white;
-      padding: 12px 28px;
+      padding: 14px 36px;
       text-decoration: none;
-      font-weight: 600;
-      border-radius: 6px;
+      font-weight: 700;
+      border-radius: 30px;
       display: inline-block;
+      font-size: 18px;
       transition: background-color 0.3s ease;
+      box-shadow: 0 6px 15px rgba(37, 117, 252, 0.4);
     }
     a.button:hover {
-      background-color: #7a4fbf;
+      background-color: #155abc;
+      box-shadow: 0 8px 20px rgba(21, 90, 188, 0.6);
     }
     .footer {
-      font-size: 12px;
+      font-size: 13px;
       color: #999;
-      margin-top: 30px;
+      margin-top: 35px;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Activate Your Account</h1>
+    <h1>Hello, {{ user.username }}!</h1>
     <p>Thank you for signing up! Please click the button below to verify your email address and activate your account.</p>
-    <a href="{{ activation_link }}" class="button">Verify Email</a>
-    <p class="footer">If you did not sign up for this account, please ignore this email.</p>
+    <p>شكراً لتسجيلك! من فضلك اضغط الزر أدناه لتفعيل حسابك.</p>
+    <a href="{{ activation_link }}" class="button">Verify Email / تفعيل الحساب</a>
+    <p class="footer">If you did not sign up for this account, please ignore this email.<br>إذا لم تقم بالتسجيل، يرجى تجاهل هذا البريد.</p>
   </div>
 </body>
 </html>
+
