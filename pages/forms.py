@@ -17,7 +17,7 @@ class RegisterForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs):
         super(RegisterForm, self).__init__(*args, **kwargs)
-        # باقي الحقول (بما فيها اللي فوق) هيتضاف لهم الكلاس
+       
         for field_name, field in self.fields.items():
             if field_name not in ['password1', 'password2']:
                 field.widget.attrs['class'] = 'form-control'
